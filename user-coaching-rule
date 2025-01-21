@@ -1,0 +1,95 @@
+when RULE_INIT {
+
+    ## ===========================================
+    ## CATEGORIES: Use this array to include any URL categories to trigger a user coaching event
+    ## Use the following TMSH command on BIG-IP to find the list of subscription categories:
+    ##   tmsh list sys url-db url-category |grep "sys url-db url-category " |awk -F" " '{print $4}'
+    ## ===========================================
+    set static::CATEGORIES {
+        "/Common/Generative_AI"
+        "/Common/Generative_AI_-_Text_&_Code"
+        "/Common/Generative_AI_-_Conversation"
+        "/Common/Generative_AI_-_Multimedia"
+        "/Common/Uncategorized"
+        "/Common/Unknown"
+        "/Common/SSLO_GENERATIVE_AI_CHAT"
+    }
+
+    ## ===========================================
+    ## COACHING MESSAGE: Use this string to indicate the message that will appear on the coaching page.
+    ## The "THISHOST" variable is replaced at runtime with the actual HTTP Host value.
+    ## ===========================================
+    set static::COACHING_MESSAGE {
+        You appear to be requesting a site <b>(THISHOST)</b> that may expose sensitive information to a third party. 
+        By accessing this site you consent to additional enterprise security controls.
+    }
+
+    ## ===========================================
+    ## CATEGORY TYPE: Use this option to indicate the type of category to use ("subscription" or "custom_only").
+    ## ===========================================
+    set static::CATEGORY_TYPE "subscription"
+
+    ## ===========================================
+    ## JUSTIFICATION_LOGGING: Use this option to require a justifaction in the coaching page. Enter any value 
+    ## in the string to enable a justifaction form post in te coaching page.
+    ## ===========================================
+    set static::JUSTIFICATION_LOGGING ""
+    
+    ## ===========================================
+    ## LOG ENABLED: Use this Boolean option to enable/disable logging of coaching page access
+    ## ===========================================
+    set static::LOG_ENABLED 1
+
+}
+
+proc JUSTIFICATION { data host } {
+    ## Set up message content
+    set now [clock seconds]
+    set timestr [clock format $now -format "%Y-%m-%d %H:%M:%S"]
+    set usermsg "ALERT-COACHING-TRIGGER::${timestr}::client=[IP::client_addr]::host=${host}::${data}"
+    
+    ## Set up log output
+    log -noname local0. $usermsg
+}
+
+when HTTP_REQUEST {
+    sharedvar ctx
+
+    if { [HTTP::uri] starts_with "/f5_handler_coaching" } {
+        switch -glob [HTTP::query] {
+            "uri=*" {
+                HTTP::collect [HTTP::payload length]
+            }
+            default {
+                HTTP::respond 500
+            }
+        }
+    } elseif { ($static::CATEGORY_TYPE eq "subscription") && 
+        ([lsearch -exact $static::CATEGORIES [getfield [CATEGORY::lookup "https://[HTTP::host]/" request_default -ip [IP::local_addr]] " " 1]] >= 0) &&
+        ([table lookup "[IP::client_addr]_[domain [HTTP::host] 2]_${ctx(ja4)}"] < 1) } {
+        set receive_host [HTTP::host]
+        set receive_uri [URI::encode [b64encode [HTTP::host][HTTP::uri]]]
+        set receive_msg [string map [list "THISHOST" "[domain [HTTP::host] 2]"] $static::COACHING_MESSAGE]
+        if { $static::JUSTIFICATION_LOGGING ne "" } { set receive_justify "enabled" } else { set receive_justify "" }
+        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get test.html]]
+
+    } elseif { ($static::CATEGORY_TYPE eq "custom_only") && 
+        ([lsearch -exact $static::CATEGORIES  [CATEGORY::lookup "https://[HTTP::host]/" custom]] >= 0) &&
+        ([table lookup "[IP::client_addr]_[domain [HTTP::host] 2]_${ctx(ja4)}"] < 1) } {
+        set receive_host [HTTP::host]
+        set receive_uri [URI::encode [b64encode [HTTP::host][HTTP::uri]]]
+        set receive_msg [string map [list "THISHOST" "[domain [HTTP::host] 2]"] $static::COACHING_MESSAGE]
+        if { $static::JUSTIFICATION_LOGGING ne "" } { set receive_justify "enabled" } else { set receive_justify "" }
+        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get test.html]]
+    }
+}
+when HTTP_REQUEST_DATA {
+    if { [HTTP::method] eq "POST" } {
+        if { $static::LOG_ENABLED } { call JUSTIFICATION [HTTP::payload] [HTTP::host] }
+    } else {
+        if { $static::LOG_ENABLED } { call JUSTIFICATION "" [HTTP::host] }
+    }
+    table set "[IP::client_addr]_[domain [HTTP::host] 2]_${ctx(ja4)}" 1 40 indef
+    set redir [b64decode [URI::decode [lindex [split [HTTP::query] "="] 1]]]
+    HTTP::respond 302 Location "https://${redir}"
+}
