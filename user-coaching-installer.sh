@@ -4,7 +4,7 @@ if [[ -z "${BIGUSER}" ]]
 then
     echo 
     echo "The user:pass must be set in an environment variable. Exiting."
-    echo "   export BIGUSER 'admin:admin'"
+    echo "   export BIGUSER 'admin:password'"
     echo 
     exit 1
 fi
@@ -28,7 +28,7 @@ https://localhost/mgmt/tm/ltm/ifile -o /dev/null
 # ## Install user-coaching-rule iRule
 echo "..Creating the user-coaching-rule iRule"
 rule=$(curl -sk https://raw.githubusercontent.com/kevingstewart/sslo-user-coaching/refs/heads/main/user-coaching-rule | awk '{printf "%s\\n", $0}' | sed -e 's/\"/\\"/g;s/\x27/\\'"'"'/g')
-data="{\"name\":\"user-coaching-rule-tmp\",\"apiAnonymous\":\"${rule}\"}"
+data="{\"name\":\"user-coaching-rule\",\"apiAnonymous\":\"${rule}\"}"
 curl -sk \
 -u admin:admin \
 -H "Content-Type: application/json" \
@@ -38,7 +38,7 @@ https://localhost/mgmt/tm/ltm/rule -o /dev/null
 # ## Install user-coaching-ja4t-rule iRule
 echo "..Creating the user-coaching-ja4t-rule iRule"
 rule=$(curl -sk https://raw.githubusercontent.com/kevingstewart/sslo-user-coaching/refs/heads/main/user-coaching-ja4t-rule | awk '{printf "%s\\n", $0}' | sed -e 's/\"/\\"/g;s/\x27/\\'"'"'/g')
-data="{\"name\":\"user-coaching-ja4t-rule-tmp\",\"apiAnonymous\":\"${rule}\"}"
+data="{\"name\":\"user-coaching-ja4t-rule\",\"apiAnonymous\":\"${rule}\"}"
 curl -sk \
 -u admin:admin \
 -H "Content-Type: application/json" \
