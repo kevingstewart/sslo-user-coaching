@@ -71,7 +71,7 @@ when HTTP_REQUEST {
         set receive_uri [URI::encode [b64encode [HTTP::host][HTTP::uri]]]
         set receive_msg [string map [list "THISHOST" "[domain [HTTP::host] 2]"] $static::COACHING_MESSAGE]
         if { $static::JUSTIFICATION_LOGGING ne "" } { set receive_justify "enabled" } else { set receive_justify "" }
-        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get test.html]]
+        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get user_coaching_html]]
 
     } elseif { ($static::CATEGORY_TYPE eq "custom_only") && 
         ([lsearch -exact $static::CATEGORIES  [CATEGORY::lookup "https://[HTTP::host]/" custom]] >= 0) &&
@@ -80,7 +80,7 @@ when HTTP_REQUEST {
         set receive_uri [URI::encode [b64encode [HTTP::host][HTTP::uri]]]
         set receive_msg [string map [list "THISHOST" "[domain [HTTP::host] 2]"] $static::COACHING_MESSAGE]
         if { $static::JUSTIFICATION_LOGGING ne "" } { set receive_justify "enabled" } else { set receive_justify "" }
-        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get test.html]]
+        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get user_coaching_html]]
     }
 }
 when HTTP_REQUEST_DATA {
