@@ -1,5 +1,8 @@
 # SSLO User Coaching Implementation
 
+Requires:
+* BIG-IP SSL Orchestrator 17.1.x
+
 To implement:
 1. Run the following from the BIG-IP shell to get the installer:
   ```bash
