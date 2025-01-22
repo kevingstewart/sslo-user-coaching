@@ -1,0 +1,169 @@
+{
+   "name": "sslo_ob_SERVICE_CREATE_ssloS_F5_UC",
+   "inputProperties": [
+    {
+        "id": "f5-ssl-orchestrator-operation-context",
+        "type": "JSON",
+        "value": {
+          "operationType": "CREATE",
+          "deploymentType": "SERVICE",
+          "deploymentName": "ssloS_F5_UC",
+          "deploymentReference": "",
+          "partition": "Common",
+          "strictness": true
+        }
+      },
+      {
+        "id": "f5-ssl-orchestrator-service",
+        "type": "JSON",
+        "value": [
+          {
+            "strictness": false,
+            "customService": {
+              "name": "ssloS_F5_UC",
+              "serviceDownAction": "ignore",
+              "portRemap": false,
+              "serviceType": "tap",
+              "httpPortRemapValue": 80,
+              "managedNetwork": {
+                "serviceType": "tap",
+                "ipFamily": "both",
+                "ipv4": {
+                  "serviceType": "tap",
+                  "ipFamily": "ipv4",
+                  "serviceSubnet": "198.19.99.0",
+                  "serviceIndex": 1,
+                  "subnetMask": "255.255.255.252",
+                  "serviceSelfIp": "198.19.99.8",
+                  "serviceHASelfIp": "198.19.99.9",
+                  "deviceIp": "198.19.99.10"
+                },
+                "ipv6": {
+                  "serviceType": "tap",
+                  "ipFamily": "ipv6",
+                  "serviceSubnet": "2001:0200:0:0101::",
+                  "serviceIndex": 1,
+                  "subnetMask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:fff0",
+                  "serviceSelfIp": "2001:0200:0:0101::8",
+                  "serviceHASelfIp": "2001:0200:0:0101::9",
+                  "deviceIp": "2001:0200:0:0101::a"
+                }
+              },
+              "serviceSpecific": {
+                "name": "ssloS_F5_UC",
+                "vendorConfig": {},
+                "macAddress": "12:12:12:12:12:12",
+                "vlan": {
+                  "create": true,
+                  "networkInterface": "1.1",
+                  "interface": "1.3",
+                  "networkTag": 4094,
+                  "tag": "100",
+                  "path": "/Common/ssloN_F5_UC.app/ssloN_F5_UC",
+                  "name": "ssloN_F5_UC"
+                },
+                "description": ""
+              }
+            },
+            "vendorInfo": {
+              "name": "F5 SSLO User-Coaching"
+            },
+            "createNewNetworkObj": {
+              "name": "ssloN_F5_UC",
+              "networkError": false,
+              "networkInterface": "1.3",
+              "networkTag": "100"
+            },
+            "useExistingNetworkObj": {
+              "path": "",
+              "tag": 4094,
+              "networkTag": 4094,
+              "networkInterface": "1.1",
+              "interface": "1.1",
+              "modify": false
+            },
+            "description": "Type: tap",
+            "useTemplate": false,
+            "serviceTemplate": "",
+            "partition": "Common",
+            "previousVersion": "11.0",
+            "version": "11.0",
+            "name": "ssloS_F5_UC"
+          }
+        ]
+      },
+      {
+        "id": "f5-ssl-orchestrator-service-chain",
+        "type": "JSON",
+        "value": []
+      },
+      {
+        "id": "f5-ssl-orchestrator-policy",
+        "type": "JSON",
+        "value": {}
+      },
+      {
+        "id": "f5-ssl-orchestrator-topology",
+        "type": "JSON",
+        "value": {}
+      },
+      {
+        "id": "f5-ssl-orchestrator-intercept-rule",
+        "type": "JSON",
+        "value": []
+      },
+      {
+        "id": "f5-ssl-orchestrator-network",
+        "type": "JSON",
+        "value": [
+          {
+            "partition": "Common",
+            "strictness": false,
+            "name": "ssloN_F5_UC",
+            "previousVersion": "11.0",
+            "version": "11.0",
+            "vlan": {
+              "create": true,
+              "path": "/Common/ssloN_F5_UC.app/ssloN_F5_UC",
+              "interface": [
+                "1.3"
+              ],
+              "tag": "100"
+            },
+            "selfIpConfig": {
+              "selfIp": "",
+              "netmask": "",
+              "floating": false,
+              "HAstaticIpMap": [
+                {
+                  "deviceMgmtIp": "",
+                  "selfIp": ""
+                }
+              ]
+            },
+            "routeDomain": {
+              "create": false,
+              "id": 0,
+              "path": ""
+            }
+          }
+        ]
+      }
+   ],
+   "configurationProcessorReference": {
+        "link": "https://localhost/mgmt/shared/iapp/processors/f5-iappslx-ssl-orchestrator-gc"
+    },
+    "configProcessorTimeoutSeconds": 120,
+    "statsProcessorTimeoutSeconds": 60,
+    "configProcessorAffinity": {
+        "processorPolicy": "LOCAL",
+        "affinityProcessorReference": {
+            "link": "https://localhost/mgmt/shared/iapp/affinity/local"
+        }
+    },
+    "state": "BINDING",
+    "presentationHtmlReference": {
+        "link": "https://localhost/iapps/f5-iappslx-ssl-orchestrator/sgc/sgcIndex.html"
+    },
+    "operation": "CREATE"
+}
