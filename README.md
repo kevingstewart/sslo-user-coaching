@@ -28,7 +28,7 @@ To implement:
 
 ------
 To Remove:
-1. Remove ssloS_F5_UC service from any SSLO service chain
+1. Remove the ssloS_F5_UC service from any SSLO service chain
 2. Delete the ssloS_F5_UC service
 3. Remove the user-coaching-ja4t-rule iRule from the SSLO interception rule
 4. Delete the user-coaching-ja4t-rule and user-coaching-rule iRules
