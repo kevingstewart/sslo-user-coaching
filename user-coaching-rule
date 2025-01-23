@@ -12,7 +12,6 @@ when RULE_INIT {
         "/Common/Generative_AI_-_Multimedia"
         "/Common/Uncategorized"
         "/Common/Unknown"
-        "/Common/SSLO_GENERATIVE_AI_CHAT"
     }
     ## ===========================================
     ## SESSION TIMER: Use this value to define the timeout value for the user session table entry (in seconds)
