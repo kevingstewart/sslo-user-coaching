@@ -53,6 +53,10 @@ proc JUSTIFICATION { data host } {
 }
 
 when HTTP_REQUEST {
+    ## Disable tenant-restrictions iRule
+    event HTTP_REQUEST disable
+
+    ## Get ctx shared variable from SSLO (stores JA4 fingerprint)
     sharedvar ctx
 
     if { [HTTP::uri] starts_with "/f5_handler_coaching" } {
