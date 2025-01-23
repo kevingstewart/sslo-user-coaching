@@ -45,8 +45,8 @@ curl -sk \
 -d "${data}" \
 https://localhost/mgmt/tm/ltm/rule -o /dev/null
 
-## Create SSLO User-Coaching TAP Inspection Service
-echo "..Creating the SSLO user-coaching inspection service (type TAP)"
+## Create SSLO User-Coaching Inspection Service
+echo "..Creating the SSLO user-coaching inspection service"
 curl -sk \
 -u admin:admin \
 -H "Content-Type: application/json" \
@@ -56,23 +56,5 @@ https://localhost/mgmt/shared/iapp/blocks -o /dev/null
 ## Sleep for 15 seconds to allow SSLO inspection service creation to finish
 echo "..Sleeping for 15 seconds to allow SSLO inspection service creation to finish"
 sleep 15
-
-# ## Modify SSLO User-Coaching TAP Service Profile (add http profile, remove clone-pool)
-echo "..Modifying the SSLO user-coaching service"
-curl -sk \
--u admin:admin \
--H "Content-Type: application/json" \
--X PATCH \
--d '{"clonePools": [],"rules":["/Common/user-coaching-rule"],"profiles":[{"name":"http"},{"name":"ssloS_F5_UC.app/ssloS_F5_UC-service"},{"name":"ssloS_F5_UC.app/ssloS_F5_UC-tcp-lan","context":"clientside"},{"name":"ssloS_F5_UC.app/ssloS_F5_UC-tcp-wan","context":"serverside"}]}' \
-https://localhost/mgmt/tm/ltm/virtual/ssloS_F5_UC.app~ssloS_F5_UC-t-4 -o /dev/null
-
-# ## Modify the Service profile (change to f5-module type)
-echo "..Modifying the SSLO user-coaching service profile"
-curl -sk \
--u admin:admin \
--H "Content-Type: application/json" \
--X PATCH \
--d '{"type": "f5-module"}' \
-https://localhost/mgmt/tm/ltm/profile/service/ssloS_F5_UC.app~ssloS_F5_UC-service -o /dev/null
 
 echo "..Done"
