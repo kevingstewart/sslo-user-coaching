@@ -57,4 +57,13 @@ https://localhost/mgmt/shared/iapp/blocks -o /dev/null
 echo "..Sleeping for 15 seconds to allow SSLO inspection service creation to finish"
 sleep 15
 
+## Modify SSLO User-Coaching Service (remove tenant-restrictions iRule)
+echo "..Modifying the SSLO user-coaching service"
+curl -sk \
+-u ${BIGUSER} \
+-H "Content-Type: application/json" \
+-X PATCH \
+-d '{"rules":["/Common/user-coaching-rule"]}' \
+https://localhost/mgmt/tm/ltm/virtual/ssloS_F5_UC.app~ssloS_F5_UC-t-4 -o /dev/null
+
 echo "..Done"
