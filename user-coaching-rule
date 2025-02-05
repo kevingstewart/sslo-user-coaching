@@ -63,6 +63,11 @@ when HTTP_REQUEST priority 10 {
     ## Get ctx shared variable from SSLO (stores JA4 fingerprint)
     sharedvar ctx
 
+    ## Return if ja4 not found (probably not HTTPS)
+    if { ![info exists ctx(ja4)] } {
+        return
+    }
+
     if { [HTTP::uri] starts_with "/f5_handler_coaching" } {
         switch -glob [HTTP::query] {
             "uri=*" {
