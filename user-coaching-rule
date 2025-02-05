@@ -32,7 +32,7 @@ when RULE_INIT {
     ## ===========================================
     ## SESSION TIMER: Use this value to define the timeout value for the user session table entry (in seconds)
     ## ===========================================
-    set static::SESSION_TIMER 20
+    set static::SESSION_TIMER 3600
 
     ## ===========================================
     ## COACHING MESSAGE: Use this string to indicate the message that will appear on the coaching page.
