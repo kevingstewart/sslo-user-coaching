@@ -1,11 +1,4 @@
 when RULE_INIT {
-
-    ## ===========================================
-    ## SSLO POLICY TRIGGER: Use this Boolean option to define whether the trigger for user coaching
-    ## is implemented via the iRule (ie. category lookup in iRule), or via SSLO policy (ie. SSLO policy
-    ## rule condition match).
-    ## ===========================================
-    set static::SSLO_POLICY_TRIGGER 1
     
     ## ===========================================
     ## CATEGORIES: When SSLO_POLICY_TRIGGER is 0 (false), use this array to include any URL categories
@@ -79,14 +72,6 @@ when HTTP_REQUEST priority 10 {
                 HTTP::respond 500
             }
         }
-    } elseif { ($static::SSLO_POLICY_TRIGGER) &&
-        ([table lookup "[IP::client_addr]_[domain [HTTP::host] 2]_${ctx(ja4)}"] < 1) } {
-        set receive_host [HTTP::host]
-        set receive_uri [URI::encode [b64encode [HTTP::host][HTTP::uri]]]
-        set receive_msg [string map [list "THISHOST" "[domain [HTTP::host] 2]"] $static::COACHING_MESSAGE]
-        if { $static::JUSTIFICATION_LOGGING ne "" } { set receive_justify "enabled" } else { set receive_justify "" }
-        HTTP::respond 200 content  [subst -nocommands -nobackslashes [ifile get user-coaching-html]]
-    
     } elseif { ($static::CATEGORY_TYPE eq "subscription") && 
         ([lsearch -exact $static::CATEGORIES [getfield [CATEGORY::lookup "https://[HTTP::host]/" request_default -ip [IP::local_addr]] " " 1]] >= 0) &&
         ([table lookup "[IP::client_addr]_[domain [HTTP::host] 2]_${ctx(ja4)}"] < 1) } {
