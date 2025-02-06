@@ -13,7 +13,6 @@ when RULE_INIT {
         "/Common/Generative_AI_-_Multimedia"
         "/Common/Uncategorized"
         "/Common/Unknown"
-        "/Common/SSLO_GENERATIVE_AI_CHAT"
     }
     
     ## ===========================================
