@@ -1,8 +1,8 @@
 when RULE_INIT {
     
     ## ===========================================
-    ## CATEGORIES: When SSLO_POLICY_TRIGGER is 0 (false), use this array to include any URL categories
-    ## to trigger a user coaching event. Use the following TMSH command on BIG-IP to find the list of
+    ## CATEGORIES: Use this array to include any URL categories to trigger a user coaching event. 
+    ## Use the following TMSH command on BIG-IP to find the list of
     ## subscription categories:
     ##   tmsh list sys url-db url-category |grep "sys url-db url-category " |awk -F" " '{print $4}'
     ## ===========================================
@@ -17,8 +17,7 @@ when RULE_INIT {
     }
     
     ## ===========================================
-    ## CATEGORY TYPE: When SSLO_POLICY_TRIGGER is 0 (false), use this option to indicate the type of 
-    ## category to use ("subscription" or "custom_only").
+    ## CATEGORY TYPE: Use this option to indicate the type of category to use ("subscription" or "custom_only").
     ## ===========================================
     set static::CATEGORY_TYPE "subscription"
     
