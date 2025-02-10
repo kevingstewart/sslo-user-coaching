@@ -35,8 +35,8 @@ when RULE_INIT {
     }
 
     ## ===========================================
-    ## JUSTIFICATION_LOGGING: Use this option to require a justifaction in the coaching page. Enter any value 
-    ## in the string to enable a justifaction form post in te coaching page.
+    ## JUSTIFICATION_LOGGING: Use this option to require a justification in the coaching page. Enter any value 
+    ## in the string to enable a justification form post in the coaching page.
     ## ===========================================
     set static::JUSTIFICATION_LOGGING ""
 
