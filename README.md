@@ -31,18 +31,20 @@ To implement manually:
 
 1. Create the iFile system object by importing the **user-coaching-html** file.
 2. Create the iFile LTM object, selecting above iFile system object. Use "user-coaching-html" as name.
-3. Import the **user-coaching-rule** iRule.
-4. Import the **user-coaching-ja4t-rule** iRule.
-5. Create the SSL Orchestrator inspection service for UC:
+3. Create the iFile system object by importing the **user-blocking-html** file.
+4. Create the iFile LTM object, selecting above iFile system object. Use "user-blocking-html" as name.
+5. Import the **user-coaching-rule** iRule.
+6. Import the **user-coaching-ja4t-rule** iRule.
+7. Create the SSL Orchestrator inspection service for UC:
    a. Type: Office 365 Tenant Restrictions
    b. Name: Provide a name (ex. F5_UC)
    c. Restrict Access to Tenant: anything...(doesn't matter)
    d. Restrict Access Context: anything...(doesn't matter)
    e. iRules: select the **user-coaching-rule** iRule
    f. Deploy
-6. Update the user coaching service virtual server (Local Traffic -> Virtual Servers): Remove the built-in tenant restrictions iRule.
-7. Add the "user-coaching-ja4t-rule" iRule to the SSLO outbound topology interception rule
-8. Add the user coaching inspection service in SSLO to a decrypted traffic service chain
+8. Update the user coaching service virtual server (Local Traffic -> Virtual Servers): Remove the built-in tenant restrictions iRule.
+9. Add the "user-coaching-ja4t-rule" iRule to the SSLO outbound topology interception rule
+10. Add the user coaching inspection service in SSLO to a decrypted traffic service chain
 
 
 ------
@@ -52,6 +54,7 @@ To Remove:
 3. Remove the user-coaching-ja4t-rule iRule from the SSLO interception rule
 4. Delete the user-coaching-ja4t-rule and user-coaching-rule iRules
 5. Delete the user-coaching iFile (LTM and system)
+6. Delete the user-blocking iFile (LTM and system)
 
 
 
