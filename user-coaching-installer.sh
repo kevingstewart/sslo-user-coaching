@@ -25,6 +25,22 @@ curl -sk \
 -d '{"name":"user-coaching-html", "file-name": "user-coaching-html"}' \
 https://localhost/mgmt/tm/ltm/ifile -o /dev/null
 
+## Create iFile System object (user-blocking-html)
+echo "..Creating the iFile system object for the user-blocking-html"
+curl -sk \
+-u ${BIGUSER} \
+-H "Content-Type: application/json" \
+-d '{"name": "user-blocking-html", "source-path": "https://raw.githubusercontent.com/kevingstewart/sslo-user-coaching/refs/heads/main/user-blocking-html"}' \
+https://localhost/mgmt/tm/sys/file/ifile/ -o /dev/null
+
+# ## Create iFile LTM object (user-blocking-html)
+echo "..Creating the iFile LTM object for the user-blocking-html"
+curl -sk \
+-u ${BIGUSER} \
+-H "Content-Type: application/json" \
+-d '{"name":"user-blocking-html", "file-name": "user-blocking-html"}' \
+https://localhost/mgmt/tm/ltm/ifile -o /dev/null
+
 # ## Install user-coaching-rule iRule
 echo "..Creating the user-coaching-rule iRule"
 rule=$(curl -sk https://raw.githubusercontent.com/kevingstewart/sslo-user-coaching/refs/heads/main/user-coaching-rule | awk '{printf "%s\\n", $0}' | sed -e 's/\"/\\"/g;s/\x27/\\'"'"'/g')
